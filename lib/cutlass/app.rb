@@ -110,7 +110,9 @@ module Cutlass
       on_teardown { build.teardown }
 
       @builds << build
-      yield build.call
+      build.call
+
+      yield build if block_given?
     end
 
     def transaction

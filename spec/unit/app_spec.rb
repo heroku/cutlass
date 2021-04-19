@@ -54,9 +54,13 @@ module Cutlass
             web: touch lol && tail -f lol # Need an entrypoint that doesn't exit
           EOM
 
+          # Test build with block
           app.pack_build do |result|
             expect(result.stdout).to include("Successfully built image")
           end
+
+          # Test build with no block
+          app.pack_build
 
           # App#stdout is the same as App#last_build.stdout
           expect(app.stdout).to include("Successfully built image")
