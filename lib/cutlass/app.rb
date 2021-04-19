@@ -34,7 +34,7 @@ module Cutlass
       @warn_io = warn_io
       @builder = builder
       @image_name = image_name
-      @buildpacks = buildpacks
+      @buildpacks = Array(buildpacks).map { |buildpack| buildpack == :default ? Cutlass.default_buildpack_paths : buildpack }.flatten
       @source_path_name = source_path_name
       @exception_on_failure = exception_on_failure
     end

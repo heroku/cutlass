@@ -135,7 +135,7 @@ In additon to the standard `package.toml` interface, if this directory has a `bu
 
 - @param repo_name [String] the path to a directory on disk, or the name of a directory inside of the `config.default_repos_dir`.
 - @param builder [String] the name of a CNB "builder" used to build the app against. Defaults to `config.default_builder`.
-- @param buildpacks [Array<String>] the array of buildpacks to build the app against. Defaults to `config.default_buildpack_paths`.
+- @param buildpacks [Array<String>] the array of buildpacks to build the app against. Defaults to `config.default_buildpack_paths`. If you pass in a symbol of `:default` it will substitute `Cutlass.default_buildpack_paths`. That means passing in `["heroku/nodejs", :default]` is a shortcut for `["heroku/nodejs, Cutlass.default_buildpack_paths].flatten`.
 - @param config [Hash{Symbol => String}, Hash{String => String}] env vars to set against the app before it is built.
 - @param exception_on_failure: [Boolean] when truthy failures on `app.pack_build` will result in an exception. Default is true.
 

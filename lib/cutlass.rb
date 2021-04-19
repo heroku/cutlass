@@ -20,8 +20,23 @@ module Cutlass
 
   class << self
     # Cutlass.default_builder
-    # Cutlass.default_buildpack_paths
-    attr_accessor :default_builder, :default_buildpack_paths
+    attr_accessor :default_builder
+  end
+
+  def self.default_buildpack_paths=(paths)
+    paths = Array(paths).map { |path| Pathname(path) }
+
+    paths.each do |path|
+      raise "Path must exist on disk #{path}" unless path.exist?
+    end
+
+    @default_buildpack_paths = paths
+  end
+
+  def self.default_buildpack_paths
+    raise "Must set Cutlass.default_buildpack_paths to a non-empty value" if @default_buildpack_paths.empty? || @default_buildpack_paths.nil?
+
+    @default_buildpack_paths
   end
 
   @default_buildpack_paths = []
