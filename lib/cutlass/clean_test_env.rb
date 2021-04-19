@@ -35,9 +35,9 @@ module Cutlass
       @skip_keys << key
     end
 
-    def self.record
+    def self.record(docker: ENV["CUTLASS_CHECK_DOCKER"])
       @env_diff = EnvDiff.new(skip_keys: @skip_keys)
-      @docker_diff = DockerDiff.new
+      @docker_diff = DockerDiff.new if docker
     end
 
     def self.check(docker: ENV["CUTLASS_CHECK_DOCKER"])

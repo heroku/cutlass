@@ -29,7 +29,7 @@ module Cutlass
         Cutlass.in_fork do
           image_name = "cutlass_#{SecureRandom.hex(10)}:sup"
 
-          CleanTestEnv.record
+          CleanTestEnv.record(docker: true)
           dir = Pathname(dir)
           dockerfile = dir.join("Dockerfile")
           dockerfile.write <<~EOM
