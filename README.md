@@ -33,7 +33,7 @@ Cutlass.config do |config|
   config.default_builder = "heroku/buildpacks:18"
 
   # Where do your test fixtures live?
-  config.default_repos_dir = [File.join(__dir__, "..", "repos", "ruby_apps")]
+  config.default_repo_dirs = [File.join(__dir__, "..", "repos", "ruby_apps")]
 
   # Where does your buildpack live?
   # Can be a directory or a Cutlass:LocalBuildpack instance
