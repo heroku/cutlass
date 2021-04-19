@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cutlass (0.1.0)
+    cutlass (0.1.1)
       docker-api (>= 2.0)
 
 GEM
@@ -13,7 +13,7 @@ GEM
     docker-api (2.1.0)
       excon (>= 0.47.0)
       multi_json
-    excon (0.79.0)
+    excon (0.80.1)
     multi_json (1.15.0)
     parallel (1.20.1)
     parallel_split_test (0.9.1)
@@ -74,4 +74,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.1.4
+   2.2.15
