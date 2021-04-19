@@ -6,7 +6,7 @@ module Cutlass
       Dir.mktmpdir do |app_dir|
         stringio = StringIO.new
         expect {
-          App.new(app_dir, warn_io: stringio).transaction do |app|
+          App.new(app_dir, warn_io: stringio, buildpacks: []).transaction do |app|
             app.on_teardown do
               raise "nopenopenope"
             end
@@ -23,6 +23,7 @@ module Cutlass
         expect(stringio.string).to include("nopenopenope")
       end
     end
+
     it "builds", slow: true do
       Dir.mktmpdir do |app_dir|
         run_multi_called_string = nil
@@ -83,7 +84,7 @@ module Cutlass
 
     it "what happens in a transaction on disk stays in a transaction" do
       Dir.mktmpdir do |source_dir|
-        App.new(source_dir).transaction do |app|
+        App.new(source_dir, buildpacks: []).transaction do |app|
           FileUtils.touch("cat")
 
           expect(Pathname(Dir.pwd).join("cat")).to exist
@@ -98,7 +99,7 @@ module Cutlass
       Dir.mktmpdir do |source_dir|
         FileUtils.touch(File.join(source_dir, "cat"))
 
-        App.new(source_dir).transaction do |app|
+        App.new(source_dir, buildpacks: []).transaction do |app|
           expect(Pathname(Dir.pwd).join("cat")).to exist
         end
       end
@@ -107,7 +108,7 @@ module Cutlass
     it "transaction calls teardown blocks" do
       Dir.mktmpdir do |source_dir|
         animals = []
-        App.new(source_dir).transaction do |app|
+        App.new(source_dir, buildpacks: []).transaction do |app|
           app.on_teardown do
             animals << "dog"
           end
@@ -127,7 +128,7 @@ module Cutlass
       Dir.mktmpdir do |source_dir|
         FileUtils.touch(File.join(source_dir, "cat"))
 
-        App.new(source_dir).tap do |app|
+        App.new(source_dir, buildpacks: []).tap do |app|
           app.in_dir do |tmpdir|
             expect(tmpdir.join("cat")).to exist
 
@@ -140,12 +141,22 @@ module Cutlass
 
     it "defaults" do
       Dir.mktmpdir do |source_dir|
-        app = App.new(source_dir)
+        Cutlass.in_fork do
+          Cutlass.config do |config|
+            config.default_buildpack_paths = [source_dir]
+          end
+          expect(Cutlass.default_buildpack_paths.map(&:to_s)).to eq([source_dir])
 
-        expect(app.config).to eq({})
-        expect(app.builder).to eq(Cutlass.default_builder)
-        expect(app.buildpacks).to eq(Cutlass.default_buildpack_paths)
-        expect(app.exception_on_failure).to eq(true)
+          app = App.new(source_dir)
+
+          expect(app.config).to eq({})
+          expect(app.builder).to eq(Cutlass.default_builder)
+          expect(app.buildpacks).to eq(Cutlass.default_buildpack_paths)
+          expect(app.exception_on_failure).to eq(true)
+
+          app = App.new(source_dir, buildpacks: ["heroku/nodejs", :default])
+          expect(app.buildpacks).to eq(["heroku/nodejs"] + Cutlass.default_buildpack_paths)
+        end
       end
     end
   end
