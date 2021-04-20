@@ -31,6 +31,10 @@ module Cutlass
       @image_name = "cutlass_local_buildpack_#{SecureRandom.hex(10)}"
     end
 
+    def exist?
+      @directory.exist?
+    end
+
     def teardown
       return unless built?
 

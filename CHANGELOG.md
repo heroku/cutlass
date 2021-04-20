@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## 0.1.4
+
+- Cutlass.default_buildpack_paths= now accepts a LocalBuildpack https://github.com/heroku/cutlass/pull/6
+
 ## 0.1.3
 
 - Do not connect to docker if it's not needed https://github.com/heroku/cutlass/pull/5
