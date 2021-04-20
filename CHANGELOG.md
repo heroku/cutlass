@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## 0.1.5
+
+- Expect build.sh scripts to produce a directory named "target" https://github.com/heroku/cutlass/pull/7
+
 ## 0.1.4
 
 - Cutlass.default_buildpack_paths= now accepts a LocalBuildpack https://github.com/heroku/cutlass/pull/6
