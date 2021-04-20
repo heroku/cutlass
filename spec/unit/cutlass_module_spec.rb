@@ -23,7 +23,7 @@ module Cutlass
         Cutlass.in_fork do
           buildpack = LocalBuildpack.new(directory: dir)
           Cutlass.config do |config|
-            config.default_buildpack_paths = [buildpack]
+            config.default_buildpack_paths = [buildpack, "heroku/procfile@0.6.2"]
           end
         ensure
           buildpack&.teardown

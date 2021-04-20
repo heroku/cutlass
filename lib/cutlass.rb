@@ -26,10 +26,6 @@ module Cutlass
   def self.default_buildpack_paths=(paths)
     paths = Array(paths).map { |path| path.respond_to?(:exist?) ? path : Pathname(path) }
 
-    paths.each do |path|
-      raise "Path must exist on disk #{path}" unless path.exist?
-    end
-
     @default_buildpack_paths = paths
   end
 

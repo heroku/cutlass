@@ -29,8 +29,9 @@ module Cutlass
 
     def bash_exec(cmd, exception_on_failure: true)
       stdout_ish, stderr, status = @container.exec(["bash", "-c", cmd])
+      stdout = stdout_ish.first
 
-      result = BashResult.new(stdout: stdout_ish.first, stderr: stderr, status: status)
+      result = BashResult.new(stdout: stdout, stderr: stderr, status: status)
 
       return result if result.success?
       return result unless exception_on_failure
