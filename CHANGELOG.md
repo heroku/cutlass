@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## 0.1.6
+
+- Remove premature error checking from Cutlass.default_buildpack_paths
+
 ## 0.1.5
 
 - Expect build.sh scripts to produce a directory named "target" https://github.com/heroku/cutlass/pull/7
