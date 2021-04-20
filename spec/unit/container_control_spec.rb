@@ -11,6 +11,8 @@ module Cutlass
         dockerfile.write <<~EOM
           FROM heroku/heroku:18
 
+          RUN echo "lol" > foo.txt
+
           # Entrypoint cannot exit or the container will not stay booted
           #
           # This command is an echo server with socat
@@ -40,6 +42,8 @@ module Cutlass
 
           expect(response.body).to include("?payload=#{payload}")
           expect(response.status).to eq(200)
+
+          expect(container.get_file_contents("foo.txt").strip).to eq("lol")
         end
       rescue => error
         raise error, <<~EOM
