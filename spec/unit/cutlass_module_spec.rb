@@ -18,6 +18,19 @@ module Cutlass
       end
     end
 
+    it "accepts a local buildpack" do
+      Dir.mktmpdir do |dir|
+        Cutlass.in_fork do
+          buildpack = LocalBuildpack.new(directory: dir)
+          Cutlass.config do |config|
+            config.default_buildpack_paths = [buildpack]
+          end
+        ensure
+          buildpack&.teardown
+        end
+      end
+    end
+
     it "resolves directories" do
       Cutlass.in_fork do
         Dir.mktmpdir do |dir|
