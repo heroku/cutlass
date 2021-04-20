@@ -90,7 +90,11 @@ module Cutlass
       puts result.stdout if Cutlass.debug?
       puts result.stderr if Cutlass.debug?
 
-      return if result.success?
+      if result.success?
+        @directory = @directory.join("target")
+        raise "Expected #{build_sh} to produce a directory #{@directory} but it did not" unless @directory.exist?
+        return
+      end
 
       raise <<~EOM
         Buildpack build step failed!

@@ -6,11 +6,12 @@ module Cutlass
       Dir.mktmpdir do |dir|
         name = SecureRandom.hex(10)
         dir = Pathname(dir)
-        dir.join("package.toml").write(<<~EOM)
+        dir.join("target").mkpath
+        dir.join("target/package.toml").write(<<~EOM)
           [buildpack]
           uri = "."
         EOM
-        dir.join("buildpack.toml").write(<<~EOM)
+        dir.join("target/buildpack.toml").write(<<~EOM)
           [buildpack]
           id = "cutlass/supreme_#{name}"
           version = "0.0.1"
