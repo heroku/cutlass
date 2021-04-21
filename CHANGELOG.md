@@ -1,8 +1,10 @@
 ## [Unreleased]
 
+- Lock LocalBuildpack when generating images to prevent process race conditions https://github.com/heroku/cutlass/pull/9
+
 ## 0.1.6
 
-- Remove premature error checking from Cutlass.default_buildpack_paths
+- Remove premature error checking from Cutlass.default_buildpack_paths https://github.com/heroku/cutlass/pull/8
 
 ## 0.1.5
 

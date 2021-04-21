@@ -2,6 +2,28 @@
 
 module Cutlass
   RSpec.describe Cutlass::LocalBuildpack do
+    it "locks" do
+      Dir.mktmpdir do |dir|
+        buildpack = LocalBuildpack.new(directory: dir)
+        file = Tempfile.new
+        path = Pathname(file.path)
+
+        threads = []
+        10.times do
+          threads << Thread.new do
+            10.times.each do
+              buildpack.file_lock do
+                path.write(Thread.current.object_id.to_s)
+                expect(path.read.strip).to eq(Thread.current.object_id.to_s)
+              end
+            end
+          end
+        end
+
+        threads.map(&:join)
+      end
+    end
+
     it "builds images and tears them down while calling build.sh if it exists", slow: true do
       Dir.mktmpdir do |dir|
         name = SecureRandom.hex(10)

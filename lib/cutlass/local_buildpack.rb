@@ -29,6 +29,16 @@ module Cutlass
       @built = false
       @directory = Pathname(directory)
       @image_name = "cutlass_local_buildpack_#{SecureRandom.hex(10)}"
+
+      @mutex_file = Tempfile.new
+    end
+
+    def file_lock
+      file = File.open(@mutex_file.path, File::CREAT)
+      file.flock(File::LOCK_EX)
+      yield
+    ensure
+      file.close
     end
 
     def exist?
@@ -48,13 +58,14 @@ module Cutlass
     end
 
     def call
-      return if built?
-      raise "must be directory: #{@directory}" unless @directory.directory?
+      file_lock do
+        return if built?
+        raise "must be directory: #{@directory}" unless @directory.directory?
+        @built = true
 
-      @built = true
-
-      call_build_sh
-      call_pack_buildpack_package
+        call_build_sh
+        call_pack_buildpack_package
+      end
 
       self
     end
