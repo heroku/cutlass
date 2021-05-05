@@ -1,5 +1,8 @@
 ## [Unreleased]
 
+## 0.2.0
+
+- Allow exercising salesforce functions via FunctionQuery (Experimental API) https://github.com/heroku/cutlass/pull/10
 - Lock LocalBuildpack when generating images to prevent process race conditions https://github.com/heroku/cutlass/pull/9
 
 ## 0.1.6

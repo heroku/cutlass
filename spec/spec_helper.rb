@@ -23,6 +23,14 @@ RSpec.configure do |config|
   end
 end
 
+def root_path
+  Pathname(__dir__).join("..")
+end
+
+def fixtures_path
+  root_path.join("repos")
+end
+
 def run!(command)
   out = `#{command}`
   raise "Command #{command} failed #{out}" unless $?.success?
