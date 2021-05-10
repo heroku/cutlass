@@ -2,6 +2,57 @@
 
 module Cutlass
   RSpec.describe Cutlass::FunctionQuery do
+    describe "webmock tests" do
+      before(:each) do
+        WebMock.enable!
+      end
+
+      after(:each) do
+        WebMock.disable!
+      end
+
+      it "port" do
+        port = rand(1000...9999)
+        stub_request(:any, "localhost:#{port}")
+
+        Cutlass::FunctionQuery.new(
+          port: port
+        ).call
+
+        expect(WebMock).to have_requested(:post, "localhost:#{port}")
+          .with(body: "{}")
+      end
+
+      it "body" do
+        body = {lol: "hi #{SecureRandom.hex}"}
+        port = 8080
+        stub_request(:any, "localhost:#{port}")
+
+        Cutlass::FunctionQuery.new(
+          port: port,
+          body: body
+        ).call
+
+        expect(WebMock).to have_requested(:post, "localhost:#{port}")
+          .with(body: body.to_json)
+      end
+
+      it "spec version" do
+        port = 8080
+        stub_request(:any, "localhost:#{port}")
+
+        Cutlass::FunctionQuery.new(
+          port: port,
+          spec_version: "lol"
+        ).call
+
+        expect(WebMock).to have_requested(:post, "localhost:#{port}")
+          .with(headers: {
+            "Ce-Specversion" => "lol"
+          })
+      end
+    end
+
     it "calls an app built with a function invoker buildpack", slow: "extremely" do
       Cutlass::App.new(
         fixtures_path.join("jvm/sf-fx-template-java"),
