@@ -66,8 +66,12 @@ module Cutlass
         app.pack_build
 
         app.start_container(expose_ports: [8080]) do |container|
-          query = Cutlass::FunctionQuery.new(port: container.get_host_port(8080)).call
-          expect(query.as_json).to eq({"accounts" => []})
+          body = "hello"
+          query = Cutlass::FunctionQuery.new(
+            port: container.get_host_port(8080),
+            body: body
+          ).call
+          expect(query.as_json).to eq(body.reverse)
           expect(query.success?).to be_truthy
         end
       end
