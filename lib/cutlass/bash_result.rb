@@ -28,7 +28,7 @@ module Cutlass
     def initialize(stdout:, stderr:, status:)
       @stdout = stdout
       @stderr = stderr
-      @status = status.to_i
+      @status = status.respond_to?(:exitstatus) ? status.exitstatus : status.to_i
     end
 
     # @return [Boolean]

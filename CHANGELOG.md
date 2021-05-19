@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## 0.2.1
+
+- Fix incorrect conversion of a ProcessStatus into an exit code https://github.com/heroku/cutlass/pull/16
+
 ## 0.2.0
 
 - Allow exercising salesforce functions via FunctionQuery (Experimental API) https://github.com/heroku/cutlass/pull/10
