@@ -26,6 +26,22 @@ module Cutlass
       )
       expect(result.success?).to be_truthy
 
+      `exit 0`
+      result = BashResult.new(
+        stdout: "",
+        stderr: "",
+        status: $?
+      )
+      expect(result.success?).to be_truthy
+
+      `exit 1`
+      result = BashResult.new(
+        stdout: "",
+        stderr: "",
+        status: $?
+      )
+      expect(result.success?).to be_falsey
+
       result = BashResult.new(
         stdout: "",
         stderr: "",
