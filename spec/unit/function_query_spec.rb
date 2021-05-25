@@ -11,6 +11,41 @@ module Cutlass
         WebMock.disable!
       end
 
+      it "parse error generates debug info" do
+        io = Object.new
+        def io.warn(value)
+          @warn ||= +""
+          @warn << value
+          @warn << "\n"
+        end
+
+        def io.to_s
+          @warn.to_s
+        end
+
+        port = rand(1000...9999)
+        stub_request(:any, "localhost:#{port}")
+
+        query = Cutlass::FunctionQuery.new(
+          io: io,
+          port: port
+        )
+        query.call
+
+        def query.body
+          "I am {} an {} invalid json string {}{}{}{}{"
+        end
+
+        expect { query.as_json }.to raise_error do |error|
+          expect(error).to be_a(JSON::ParserError)
+        end
+
+        expect(io.to_s).to include("Body: I am {} an {} invalid json string {}{}{}{}{")
+        expect(io.to_s).to include("Code: 200")
+        expect(io.to_s).to include("Headers: {}")
+        expect(io.to_s).to include("x-extra-info:")
+      end
+
       it "port" do
         port = rand(1000...9999)
         stub_request(:any, "localhost:#{port}")
