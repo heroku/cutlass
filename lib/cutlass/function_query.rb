@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require "json"
 require "base64"
+require "cgi"
 
 module Cutlass
   # The purpose of this class is to trigger "Salesforce Functions"
@@ -13,11 +16,14 @@ module Cutlass
   #     end
   #
   class FunctionQuery
-    def initialize(port:, spec_version: nil, body: {})
+    attr_reader :io
+
+    def initialize(port:, spec_version: nil, body: {}, io: Kernel)
       @send_body = body
       @port = port
       @response = nil
       @spec_version = spec_version || "1.0"
+      @io = io
     end
 
     def call
@@ -48,6 +54,12 @@ module Cutlass
 
     def as_json
       JSON.parse(body || "")
+    rescue JSON::ParserError => e
+      io.warn "Body: #{body}"
+      io.warn "Code: #{response&.status}"
+      io.warn "Headers: #{response&.headers.inspect}"
+      io.warn "x-extra-info: #{CGI.unescape(response&.headers&.[]("x-extra-info") || "")}"
+      raise e
     end
 
     def body
