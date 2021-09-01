@@ -92,7 +92,7 @@ Cutlass::App.new("ruby-getting-started").transaction do |app|
   #
   # Basically there's a ton of caveats to using this feature. Tread lightly.
   app.start_container(expose_ports: [8080]) do |container|
-    response = Excon.get("http://localhost:#{container.port(8080)}/", :idempotent => true, :retry_limit => 5, :retry_interval => 1)
+    response = Excon.get("http://localhost:#{container.get_host_port(8080)}/", :idempotent => true, :retry_limit => 5, :retry_interval => 1)
     expect(response.body).to eq("Welcome to rails")
 
     # Warning, this does not use the CNB entrypoint so it's in a different dir
@@ -169,7 +169,7 @@ An instance of BashResult is returned whenever Cutlass interacts with the shell 
 
 Once built an app can `app.start_container` to yield a ContainerControl object.
 
-- `container.port(<port>)` Returns the port on the host machine (your computer, not docker) that docker is bound to
+- `container.get_host_port(<port>)` Returns the port on the host machine (your computer, not docker) that docker is bound to
 - Warning: These following commands do not use the CNB entry point so CNB env vars are not loaded and it my be a different dir than you're expecting
   - `container.bash_exec(<command>)` Executes a bash command inside of a running container. Returns a BashResult object. By default this will raise an exception if the command returns non-zero exit code. Use kwarg `container.bash_exec(<command>, exception_on_failure: false)` to disable. Returns a BashResult object.
   - `container.contains_file?(<file path>)` Checks to see if a given file exists on disk. Returns a BashResult object
