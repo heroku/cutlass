@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## 0.2.3
+
+- Fix keyword arg warning https://github.com/heroku/cutlass/pull/28
+
 ## 0.2.2
 
 - Support :memory option for start_container https://github.com/heroku/cutlass/pull/27
