@@ -90,10 +90,10 @@ module Cutlass
       on_teardown { thread.join }
     end
 
-    def start_container(opts = {})
+    def start_container(memory: nil, expose_ports: [])
       raise "No block given" unless block_given?
 
-      ContainerBoot.new(opts.merge(image_id: last_build.image_id)).call do |container|
+      ContainerBoot.new(image_id: last_build.image_id, memory: memory, expose_ports: expose_ports).call do |container|
         yield container
       end
     end

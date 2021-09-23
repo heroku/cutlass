@@ -45,6 +45,11 @@ module Cutlass
 
           expect(container.get_file_contents("foo.txt").strip).to eq("lol")
         end
+
+        ContainerBoot.new(image_id: image.id, expose_ports: [8080], memory: 1e9).call do |container|
+          container.bash_exec("touch haha")
+          expect(container.contains_file?("haha")).to be_truthy
+        end
       rescue => error
         raise error, <<~EOM
           #{error.message}
