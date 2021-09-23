@@ -52,7 +52,7 @@ module Cutlass
         port_bindings["#{port}/tcp"] = [{"HostPort" => ""}]
       end
 
-      config.merge!("Memory" => memory.to_i) if memory
+      config["Memory"] = memory.to_i if memory
       @container = Docker::Container.create(config)
     end
 
