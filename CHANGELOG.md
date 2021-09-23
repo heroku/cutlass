@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- Support :memory option for start_container https://github.com/heroku/cutlass/pull/27
 - Add debug log when a function query fails https://github.com/heroku/cutlass/pull/17
 
 ## 0.2.1
