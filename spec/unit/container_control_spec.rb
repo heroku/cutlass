@@ -44,6 +44,8 @@ module Cutlass
           expect(response.status).to eq(200)
 
           expect(container.get_file_contents("foo.txt").strip).to eq("lol")
+
+          expect(container.logs.stderr).to include("POST /?payload=#{payload} HTTP/1.1")
         end
 
         ContainerBoot.new(image_id: image.id, expose_ports: [8080], memory: 1e9).call do |container|
