@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## 0.2.4
+
+- Expose container logs on actively running instances via ContainerControl https://github.com/heroku/cutlass/pull/29
+
 ## 0.2.3
 
 - Fix keyword arg warning https://github.com/heroku/cutlass/pull/28

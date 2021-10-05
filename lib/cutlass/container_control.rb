@@ -14,6 +14,13 @@ module Cutlass
       @ports = ports
     end
 
+    def logs
+      stdout = @container.logs(stdout: 1)
+      stderr = @container.logs(stderr: 1)
+
+      BashResult.new(stdout: stdout, stderr: stderr, status: 0)
+    end
+
     def get_host_port(port)
       raise "Port not bound inside container: #{port}, bound ports: #{@ports.inspect}" unless @ports.include?(port)
       @container.json["NetworkSettings"]["Ports"]["#{port}/tcp"][0]["HostPort"]
