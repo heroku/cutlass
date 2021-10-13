@@ -33,7 +33,7 @@ module Cutlass
   # container. It does not execute the container's entrypoint. That means if you're running
   # inside of a CNB image, that env vars won't be set and the directory might be different.
   class ContainerBoot
-    def initialize(image_id:, expose_ports: [], memory: nil)
+    def initialize(image_id:, env: {}, expose_ports: [], memory: nil)
       @expose_ports = Array(expose_ports)
       config = {
         "Image" => image_id,
@@ -53,6 +53,7 @@ module Cutlass
       end
 
       config["Memory"] = memory.to_i if memory
+      config["Env"] = env.map { |k, v| "#{k}=#{v}" }
       @container = Docker::Container.create(config)
     end
 

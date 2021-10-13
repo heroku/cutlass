@@ -48,9 +48,9 @@ module Cutlass
           expect(container.logs.stderr).to include("POST /?payload=#{payload} HTTP/1.1")
         end
 
-        ContainerBoot.new(image_id: image.id, expose_ports: [8080], memory: 1e9).call do |container|
-          container.bash_exec("touch haha")
-          expect(container.contains_file?("haha")).to be_truthy
+        ContainerBoot.new(image_id: image.id, env: {"MY_VAR" => "MY_VAL"}, expose_ports: [8080], memory: 1e9).call do |container|
+          my_var_val = container.bash_exec("echo -n $MY_VAR").stdout
+          expect(my_var_val).to eql("MY_VAL")
         end
       rescue => error
         raise error, <<~EOM
