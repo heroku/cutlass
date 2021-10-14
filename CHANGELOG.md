@@ -1,6 +1,9 @@
 ## [Unreleased]
 
+## 0.3.0
+
 - Support :env option for start_container https://github.com/heroku/cutlass/pull/31
+
 ## 0.2.4
 
 - Expose container logs on actively running instances via ContainerControl https://github.com/heroku/cutlass/pull/29
