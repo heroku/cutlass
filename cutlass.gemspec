@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = "Write CNB integration tests for Pack in Ruby with cutlass"
   spec.description = "Have you ever had problems opening a `pack` age? Try something sharper, try CUTLASS!"
   spec.homepage = "https://github.com/heroku/cutlass"
-  spec.license = "MIT"
+  spec.license = "BSD-3-Clause"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.4.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
