@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Switch to BSD 3-Clause License
+
 ## 0.3.0
 
 - Support :env option for start_container https://github.com/heroku/cutlass/pull/31
