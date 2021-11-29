@@ -12,7 +12,7 @@ GEM
     ast (2.4.2)
     crack (0.4.5)
       rexml
-    dead_end (1.1.6)
+    dead_end (3.1.0)
     diff-lcs (1.4.4)
     docker-api (2.2.0)
       excon (>= 0.47.0)

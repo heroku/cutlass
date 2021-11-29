@@ -28,22 +28,24 @@ module Cutlass
       Dir.mktmpdir do |dir|
         name = SecureRandom.hex(10)
         dir = Pathname(dir)
-        dir.join("target").mkpath
-        dir.join("target/package.toml").write(<<~EOM)
-          [buildpack]
-          uri = "."
-        EOM
-        dir.join("target/buildpack.toml").write(<<~EOM)
-          [buildpack]
-          id = "cutlass/supreme_#{name}"
-          version = "0.0.1"
-
-          [[stacks]]
-          id = "io.buildpacks.stacks.bionic"
-        EOM
         dir.join("build.sh").tap do |script|
           script.write(<<~EOM)
+            mkdir target
             touch #{name}
+
+            cat << EOF >> target/package.toml
+              [buildpack]
+              uri = "."
+            EOF
+
+            cat << EOF >> target/buildpack.toml
+              [buildpack]
+              id = "cutlass/supreme_#{name}"
+              version = "0.0.1"
+
+              [[stacks]]
+              id = "io.buildpacks.stacks.bionic"
+            EOF
           EOM
 
           FileUtils.chmod("+x", script)
@@ -55,7 +57,7 @@ module Cutlass
 
         expect(dir.entries.map(&:to_s)).to include(name)
 
-        expect(diff.call.changed?).to be_truthy
+        expect(diff.call.changed?).to be_falsey
         local_buildpack&.teardown
 
         expect(diff.call.changed?).to be_falsey
