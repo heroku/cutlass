@@ -116,17 +116,6 @@ Cutlass.config do |config|
 end
 ```
 
-Then you'll need to tear down the buildpack at the end of the test suite so the resulting docker image doesn't leak:
-
-```ruby
-# spec/spec_helper.rb
-RSpec.configure do |config|
-  config.after(:suite) do
-    MY_BUIDLPACK.teardown
-  end
-end
-```
-
 In additon to the standard `package.toml` interface, if this directory has a `build.sh` file that file will be executed.
 
 ## API

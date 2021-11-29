@@ -46,15 +46,11 @@ module Cutlass
     end
 
     def teardown
-      return unless built?
-
-      image = Docker::Image.get(image_name)
-      image.remove(force: true)
     end
 
     def name
       call
-      "docker://#{image_name}"
+      @directory.expand_path
     end
 
     def call
@@ -64,30 +60,9 @@ module Cutlass
         @built = true
 
         call_build_sh
-        call_pack_buildpack_package
       end
 
       self
-    end
-
-    private def call_pack_buildpack_package
-      raise "must contain package.toml: #{@directory}" unless @directory.join("package.toml").exist?
-
-      command = "pack buildpack package #{image_name} --config #{@directory.join("package.toml")} --format=image"
-      result = BashResult.run(command)
-
-      puts command if Cutlass.debug?
-      puts result.stdout if Cutlass.debug?
-      puts result.stderr if Cutlass.debug?
-
-      return if result.success?
-      raise <<~EOM
-        While packaging meta-buildpack: pack exited with status code #{result.status},
-        indicating an error and failed build!
-
-        stdout: #{result.stdout}
-        stderr: #{result.stderr}
-      EOM
     end
 
     private def call_build_sh
