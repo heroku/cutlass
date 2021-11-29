@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- Introduce "exactly once" semantics into LocalBuildpack `build.sh` builds
 - Use local buildpack files instead of generating an intermediate docker image for LocalBuildpack instances https://github.com/heroku/cutlass/pull/37
 - Switch to BSD 3-Clause License
 
