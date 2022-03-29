@@ -55,7 +55,7 @@ module Cutlass
 
         expect(dir.entries.map(&:to_s)).to include(name)
 
-        expect(diff.call.changed?).to be_truthy
+        expect(diff.call.changed?).to be_falsey
         local_buildpack&.teardown
 
         expect(diff.call.changed?).to be_falsey
